@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Metronome from './Metronome';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './PlayMode.css';
 
@@ -65,6 +66,7 @@ const PlayMode = () => {
       ) : (
         <p>Finished Routine!</p>
       )}
+      <Metronome />
       <button onClick={handleBack} className="play-mode-button">Back to Build Mode</button>
     </div>
   );

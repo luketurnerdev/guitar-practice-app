@@ -32,4 +32,30 @@ button {
 button:hover {
   background-color: #6849a5; /* Slightly darker purple on hover */
 }
+.metronome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.metronome input[type="range"] {
+  margin: 10px 0;
+}
+
+.metronome button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.metronome button:hover {
+  background-color: #0056b3;
+}
 
