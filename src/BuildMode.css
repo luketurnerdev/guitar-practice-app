@@ -1,0 +1,62 @@
+/* BuildMode.css */
+.build-mode-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .build-mode-header {
+    color: #7a5dbd;
+    margin-bottom: 20px;
+  }
+  
+  input {
+    width: 90%; /* Adjust as needed */
+  }  
+
+  /* BuildMode.css - Styling for Activities List */
+.routine-list {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #f0f0f0; /* Light gray background */
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .routine-item {
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .routine-item span {
+    font-weight: 500;
+  }
+  /* BuildMode.css - Add these styles for delete button */
+
+.delete-button {
+    background-color: #ff6b6b; /* Red color for delete button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: #ff5252; /* Darker red on hover */
+  }
+  
