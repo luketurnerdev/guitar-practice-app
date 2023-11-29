@@ -137,6 +137,10 @@ const PlayMode = () => {
     navigate('/');
   };
 
+  const handleScaleChangeInterval = (e) => {
+    const newInterval = e.target.value;
+    setScaleChangeInterval(newInterval === '' ? null : Number(newInterval)); // Default to 60 seconds if input is cleared
+  };
   const formatTime = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
@@ -194,7 +198,7 @@ const PlayMode = () => {
             id="scale-interval"
             type="number"
             value={scaleChangeInterval}
-            onChange={(e) => setScaleChangeInterval(Number(e.target.value))}
+            onChange={handleScaleChangeInterval}
             className="scale-interval-input"
           />
         </div>
