@@ -5,28 +5,28 @@ import './PlayMode.css';
 
 // Importing images
 import CMajor from './scaleImages/C Major.jpg';
-import CSharpMajor from './scaleImages/C# Major.jpg';
+import CSharpMajor from './scaleImages/CSharp Major.jpg';
 import DMajor from './scaleImages/D Major.jpg';
-import DSharpMajor from './scaleImages/D# Major.jpg';
+import DSharpMajor from './scaleImages/DSharp Major.jpg';
 import EMajor from './scaleImages/E Major.jpg';
 import FMajor from './scaleImages/F Major.jpg';
-import FSharpMajor from './scaleImages/F# Major.jpg';
+import FSharpMajor from './scaleImages/FSharp Major.jpg';
 import GMajor from './scaleImages/G Major.jpg';
-import GSharpMajor from './scaleImages/G# Major.jpg';
+import GSharpMajor from './scaleImages/GSharp Major.jpg';
 import AMajor from './scaleImages/A Major.jpg';
-import ASharpMajor from './scaleImages/A# Major.jpg';
+import ASharpMajor from './scaleImages/ASharp Major.jpg';
 import BMajor from './scaleImages/B Major.jpg';
 import CMinor from './scaleImages/C Minor.jpg';
-import CSharpMinor from './scaleImages/C# Minor.jpg';
+import CSharpMinor from './scaleImages/CSharp Minor.jpg';
 import DMinor from './scaleImages/D Minor.jpg';
-import DSharpMinor from './scaleImages/D# Minor.jpg';
+import DSharpMinor from './scaleImages/DSharp Minor.jpg';
 import EMinor from './scaleImages/E Minor.jpg';
 import FMinor from './scaleImages/F Minor.jpg';
-import FSharpMinor from './scaleImages/F# Minor.jpg';
+import FSharpMinor from './scaleImages/FSharp Minor.jpg';
 import GMinor from './scaleImages/G Minor.jpg';
-import GSharpMinor from './scaleImages/G# Minor.jpg';
+import GSharpMinor from './scaleImages/GSharp Minor.jpg';
 import AMinor from './scaleImages/A Minor.jpg';
-import ASharpMinor from './scaleImages/A# Minor.jpg';
+import ASharpMinor from './scaleImages/ASharp Minor.jpg';
 import BMinor from './scaleImages/B Minor.jpg';
 
 
@@ -75,6 +75,7 @@ const PlayMode = () => {
   const [scaleChangeInterval, setScaleChangeInterval] = useState(60);
   const [scaleTimer, setScaleTimer] = useState(60);
 
+  
   useEffect(() => {
     if (currentActivityIndex < routine.length) {
       const activity = routine[currentActivityIndex];
@@ -99,9 +100,11 @@ const PlayMode = () => {
   }, [isTimerRunning, timer]);
 
   useEffect(() => {
-    if (routine[currentActivityIndex].name === "Scales Practice") {
+    if (routine[currentActivityIndex]?.name === "Scales Practice") {
       setScaleFeatureEnabled(true);
     }
+  }, [])
+  useEffect(() => {
     if (scaleFeatureEnabled && routine[currentActivityIndex].name === "Scales Practice") {
       setCurrentScale(generateRandomScale());
       setScaleTimer(scaleChangeInterval);
@@ -148,35 +151,55 @@ const PlayMode = () => {
 
   return (
     <div className="play-mode-container">
-      <h2 className="play-mode-header">Practice Routine</h2>
-      {currentActivityIndex < routine.length ? (
-        <>
-          <p>Now Playing: {routine[currentActivityIndex].name} for {formatTime(timer)}</p>
-          <button onClick={toggleTimer} className="play-mode-button">
-            {isTimerRunning ? 'Pause' : 'Play'}
-          </button>
-          {routine[currentActivityIndex].name === "Scales Practice" && (
-            <>
-              <button onClick={() => setScaleFeatureEnabled(!scaleFeatureEnabled)} className="play-mode-button">
-                {scaleFeatureEnabled ? "Disable Random Scales" : "Enable Random Scales"}
-              </button>
+      <div className="control-section">
+        <h2 className="play-mode-header">Practice Routine</h2>
+        {currentActivityIndex < routine.length ? (
+          <>
+            <p>Now Playing: {routine[currentActivityIndex].name} for {formatTime(timer)}</p>
+            <button onClick={toggleTimer} className="play-mode-button">
+              {isTimerRunning ? 'Pause' : 'Play'}
+            </button>
+            <Metronome />
+          </>
+        ) : (
+          <p>Finished Routine!</p>
+        )}
+      </div>
 
-              { scaleFeatureEnabled && <div>
+      <div className="scale-section">
+        {routine[currentActivityIndex]?.name === "Scales Practice" && (
+          <>
+            <button onClick={() => setScaleFeatureEnabled(!scaleFeatureEnabled)} className="play-mode-button">
+              {scaleFeatureEnabled ? "Disable Random Scales" : "Enable Random Scales"}
+            </button>
+
+            {scaleFeatureEnabled && (
+              <div className="scale-container">
                 <p>Current Scale: {currentScale} - Time Remaining: {scaleTimer}s</p>
                 <img 
                   src={scaleImages[currentScale]} 
                   alt={currentScale} 
                   className="scale-image" 
                 />
-              </div>}
-              
-            </>
-          )}
-        </>
-      ) : (
-        <p>Finished Routine!</p>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {scaleFeatureEnabled && (
+        <div>
+          <label htmlFor="scale-interval">Change Scale Interval (seconds): </label>
+          <input
+            id="scale-interval"
+            type="number"
+            value={scaleChangeInterval}
+            onChange={(e) => setScaleChangeInterval(Number(e.target.value))}
+            className="scale-interval-input"
+          />
+        </div>
       )}
-      <Metronome />
+
       <button onClick={handleBack} className="play-mode-button">Back to Build Mode</button>
     </div>
   );
