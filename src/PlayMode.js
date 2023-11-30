@@ -66,6 +66,11 @@ const PlayMode = () => {
 
   const musicalKeys = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   const scaleTypes = ["Major", "Minor"];
+  const [selectedScales, setSelectedScales] = useState([
+    // Default to all scales selected
+    ...musicalKeys.map(key => `${key} Major`),
+    ...musicalKeys.map(key => `${key} Minor`)
+  ]);
 
   const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
   const [timer, setTimer] = useState(null);
@@ -137,6 +142,25 @@ const PlayMode = () => {
     navigate('/');
   };
 
+  // Updated toggleScaleFeature function
+const toggleScaleFeature = () => {
+  if (!scaleFeatureEnabled) {
+    startScalesPractice();
+  } else {
+    setScaleFeatureEnabled(false);
+  }
+};
+
+// Updated startScalesPractice function
+const startScalesPractice = () => {
+  if (selectedScales.length === 0) {
+    alert("Please select at least one scale");
+    return;
+  }
+  setScaleFeatureEnabled(true);
+  // Any additional logic to start scales practice
+};
+
   const handleScaleChangeInterval = (e) => {
     const newInterval = e.target.value;
     setScaleChangeInterval(newInterval === '' ? null : Number(newInterval)); // Default to 60 seconds if input is cleared
@@ -148,10 +172,54 @@ const PlayMode = () => {
   };
 
   const generateRandomScale = () => {
-    const randomKey = musicalKeys[Math.floor(Math.random() * musicalKeys.length)];
-    const randomType = scaleTypes[Math.floor(Math.random() * scaleTypes.length)];
-    return `${randomKey} ${randomType}`;
+    if (selectedScales.length === 0) {
+      return 'No scale selected';
+    }
+    const randomScale = selectedScales[Math.floor(Math.random() * selectedScales.length)];
+    return randomScale;
   };
+
+  const ScaleSelector = () => {
+    const handleScaleSelection = (scale) => {
+      if (selectedScales.includes(scale)) {
+        setSelectedScales(selectedScales.filter(s => s !== scale));
+      } else {
+        setSelectedScales([...selectedScales, scale]);
+      }
+    };
+  
+    const selectAllScales = () => {
+      setSelectedScales(Object.keys(scaleImages));
+    };
+  
+    const deselectAllScales = () => {
+      setSelectedScales([]);
+    };
+  
+    return (
+      <div>
+        <div className="scale-selector-buttons">
+          <button onClick={selectAllScales} className="scale-selector-button">Select All</button>
+          <button onClick={deselectAllScales} className="scale-selector-button">Deselect All</button>
+        </div>
+        <div className="scale-selector-container">
+          {Object.keys(scaleImages).map((scale, index) => (
+            <div 
+              key={index} 
+              className={`scale-checkbox ${selectedScales.includes(scale) ? 'selected' : ''}`}
+              onClick={() => handleScaleSelection(scale)}
+            >
+              {scale}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+  
+  
+  
+  
 
   return (
     <div className="play-mode-container">
@@ -169,14 +237,13 @@ const PlayMode = () => {
           <p>Finished Routine!</p>
         )}
       </div>
-
+      <ScaleSelector />
       <div className="scale-section">
         {routine[currentActivityIndex]?.name === "Scales Practice" && (
           <>
-            <button onClick={() => setScaleFeatureEnabled(!scaleFeatureEnabled)} className="play-mode-button">
-              {scaleFeatureEnabled ? "Disable Random Scales" : "Enable Random Scales"}
-            </button>
-
+        <button onClick={() => toggleScaleFeature()} className="play-mode-button">
+          {scaleFeatureEnabled ? "Disable Random Scales" : "Enable Random Scales"}
+        </button>
             {scaleFeatureEnabled && (
               <div className="scale-container">
                 <p>Current Scale: {currentScale} - Time Remaining: {scaleTimer}s</p>
@@ -185,8 +252,11 @@ const PlayMode = () => {
                   alt={currentScale} 
                   className="scale-image" 
                 />
+                
               </div>
+
             )}
+            
           </>
         )}
       </div>
